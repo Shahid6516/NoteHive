@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function Search() {
+function Addnotes() {
   const [expanded, setExpanded] = useState(false);
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
@@ -50,4 +50,4 @@ function Search() {
   );
 }
 
-export default Search;
+export default Addnotes;
