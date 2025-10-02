@@ -1,6 +1,5 @@
 import Search from './Search'
 import logo from "../assets/logo.png"
-import { MdMenu } from "react-icons/md";
 
 const Navbar = () => {
 
