@@ -1,13 +1,21 @@
-import Cards from './components/Cards'
-import Navbar from './components/Navbar'
+import { Route, Router, Routes } from "react-router-dom"
+import Home from "./pages/Home"
+import Signup from "./pages/Signup"
+import Login from "./pages/Login"
+
 
 const App = () => {
   return (
+
     <div>
-      <Navbar/>
-      <Cards/>
-      
+        <Routes>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/signup" element={<Signup/>}/>
+          <Route path="/login" element={<Login/>}/>
+        </Routes>
+
     </div>
+
   )
 }
 
