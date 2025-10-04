@@ -12,12 +12,12 @@ export const createNote = async (req, res) => {
     }
 
     const note = new Note({ title, description });
-    note.save();
-
+    await note.save();
+    console.log(note);
     return res.status(200).json({
       success: true,
       message: "Notes created successfully",
-      todo,
+      note,
     });
   } catch (error) {
     res.status(500).json({
@@ -90,5 +90,3 @@ export const deleteNote = async (req, res) => {
     });
   }
 };
-
-

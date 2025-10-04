@@ -1,21 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Cards from "./Cards";
 
 function Addnotes() {
   const [expanded, setExpanded] = useState(false);
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
+  const [notes, setNotes] = useState([]);
 
-  const handleAdd = () => {
-    console.log({ title, note });
-    setTitle("");
-    setNote("");
-    setExpanded(false);
+  useEffect(() => {
+    fetchNotes();
+  }, []);
+
+  const fetchNotes = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/api/v1/note");
+      console.log("Fetched notes:", response.data.notes); // check data
+      setNotes(response.data.notes);
+    } catch (error) {
+      console.error("Error fetching notes:", error);
+    }
+  };
+
+  const handleAdd = async () => {
+    if (!note.trim()) return;
+
+    try {
+      await axios.post(
+        "http://localhost:3000/api/v1/note/create",
+        { title, description: note },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      setTitle("");
+      setNote("");
+      setExpanded(false);
+
+      fetchNotes(); // refresh notes
+    } catch (error) {
+      console.error("Error adding note:", error);
+    }
   };
 
   return (
     <div className="flex flex-col items-center mt-10">
-      <div className="bg-white p-2 rounded-lg w-[400px] drop-shadow-md drop-shadow-zinc-500 transition-all duration-300">
-        
+      <div className="bg-white p-2 rounded-lg w-[400px] drop-shadow-md transition-all duration-300">
         {expanded && (
           <input
             type="text"
@@ -45,6 +74,12 @@ function Addnotes() {
             </button>
           </div>
         )}
+      </div>
+
+      {/* Render all notes using Cards component */}
+      <div className="mt-6 w-full px-30 flex">
+        <Cards notes={notes} onRefresh={fetchNotes} />
+
       </div>
     </div>
   );
