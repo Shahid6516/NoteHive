@@ -20,7 +20,10 @@ export const createNote = async (req, res) => {
       todo,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
   }
 };
 
@@ -34,13 +37,58 @@ export const getAllNotes = async (req, res) => {
       notes,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+export const updateNote = async (req, res) => {
+  try {
+    const { noteId } = req.params;
+    const { title, description } = req.body;
+
+    const note = await Note.findByIdAndUpdate(
+      noteId,
+      { title, description },
+      { new: true }
+    );
+
+    if (!note) {
+      return res.status(404).json({
+        success: false,
+        message: "Note not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      note,
+      message: "Note Updated Successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+export const deleteNote = async (req, res) => {
+  try {
+    const noteId = req.params.noteId;
+    await Note.findByIdAndDelete(noteId);
+    return res.status(200).json({
+      success: true,
+      message: "Note deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
   }
 };
 
 
-
-export const updateNote = async (req, res) => {};
-
-export const deleteNote = async (req, res) => {};
-3
